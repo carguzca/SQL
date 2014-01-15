@@ -1,0 +1,11 @@
+SELECT dbo.TBL_AVI_CLIENTEPROVEDOR.idCliente, dbo.TBL_AVI_CLIENTEPROVEDOR.NombreClienteProvedor, 
+      SUM({ fn IFNULL(dbo.TBL_AVI_CXP.Monto, 0) }) AS Ventas,            
+      SUM({ fn IFNULL(dbo.TBL_AVI_CXC.Monto, 0) }) AS Compras, 
+      SUM({ fn IFNULL(dbo.TBL_AVI_CXC.Monto, 0)} - { fn IFNULL(dbo.TBL_AVI_CXP.Monto, 0)})
+
+FROM dbo.TBL_AVI_CXC RIGHT OUTER JOIN
+     dbo.TBL_AVI_CLIENTEPROVEDOR ON dbo.TBL_AVI_CXC.idCliente = dbo.TBL_AVI_CLIENTEPROVEDOR.idCliente AND 
+     dbo.TBL_AVI_CXC.idCliente = dbo.TBL_AVI_CLIENTEPROVEDOR.idCliente RIGHT OUTER JOIN
+     dbo.TBL_AVI_CXP ON dbo.TBL_AVI_CLIENTEPROVEDOR.idCliente = dbo.TBL_AVI_CXP.idCliente
+     
+GROUP BY dbo.TBL_AVI_CLIENTEPROVEDOR.idCliente, dbo.TBL_AVI_CLIENTEPROVEDOR.NombreClienteProvedor
